@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad9e21536e710f49a25e42a472c2683, type: 3}
+  m_Name: PrefabsData
+  m_EditorClassIdentifier: 
+  MainMenuUIController: {fileID: 3306872886171397659, guid: aa5c46f1708c4cd418f982749087a2c2, type: 3}
+  GameplayUIController: {fileID: 6622497680553482440, guid: 67846c8378d16014e94d5a35d8d37703, type: 3}
+  GameOverUIController: {fileID: 0}
+  PlayerController: {fileID: 4580914509286184577, guid: 63ef726405589fa478937189907bfa35, type: 3}
+  AsteroidController: {fileID: 4237269446145651658, guid: a8f0218a6855faf47af10fb449a518a1, type: 3}
+  UFOController: {fileID: 7603252292092057701, guid: e8df9e832aaa10a48888b9f2b66fe429, type: 3}
+  BulletController: {fileID: 7598007419330972224, guid: 065dccbd51c903d49bad99bae3ddc774, type: 3}
+  Explosion: {fileID: 7598007419330972224, guid: ad34185596549614d9fdec269c827152, type: 3}
+  AsteroidsCreateDelayValue: 5
+  UFOCreateDelayValue: 8
+  GraphicsEnemyBullet: {fileID: 424603535, guid: ba379193ac8bbd149862d16dc0413a3c, type: 3}
+  GraphicsPlayerBullet: {fileID: 1790542230, guid: ba379193ac8bbd149862d16dc0413a3c, type: 3}

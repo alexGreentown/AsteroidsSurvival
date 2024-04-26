@@ -112,6 +112,10 @@ namespace AsteroidsSurvival.Gameplay
             StopCoroutine(CreateUFOCoroutine);
             StopCoroutine(CreateAsteroidsCoroutine);
             
+            if (OnGameOver == null)
+            {
+                throw new NotImplementedException();
+            }
             OnGameOver();
         }
 
@@ -130,7 +134,7 @@ namespace AsteroidsSurvival.Gameplay
         {
             while (true)
             {
-                yield return new WaitForSeconds(_asteroidsCreateDelay);
+                yield return new WaitForSeconds(_UFOCreateDelay);
                 UFOController newUFO = _objectsFactory.CreateUFO();
                 newUFO.Initialize(_playerController);
                 

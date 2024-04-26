@@ -66,7 +66,11 @@ namespace AsteroidsSurvival.Gameplay.Player
                 bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * shipLength;
 
                 Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
-                
+
+                if (OnMakeShot == null)
+                {
+                    throw new NotImplementedException();
+                }
                 OnMakeShot(_rotation, shipNosePosition);
             }
         }
@@ -138,7 +142,11 @@ namespace AsteroidsSurvival.Gameplay.Player
 
         public void PlayerKilled()
         {
-            OnPlayerKilled();
+            if (OnPlayerKilled == null)
+            {
+                throw new NotImplementedException();
+            }
+            OnPlayerKilled.Invoke();
         }
         
         #endregion

@@ -59,8 +59,12 @@ namespace AsteroidsSurvival.Gameplay
         {
             _gameOverController.gameObject.SetActive(true);
             _gameOverController.SetScoreText(_fightField.PlayerController.EnemiesKilled);
-            
-            OnGameExit();
+
+            if (OnGameExit == null)
+            {
+                throw new NotImplementedException();
+            }
+            OnGameExit.Invoke();
         }
 
         public void UpdateGame()

@@ -1983,7 +1983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interfaceController: {fileID: 789013237292356929}
-  _fightController: {fileID: 5670316580391653281}
+  _fightField: {fileID: 5670316580391653281}
   _gameOverController: {fileID: 842753706888389691}
 --- !u!1 &6697750578668181469
 GameObject:

@@ -76,7 +76,11 @@ namespace AsteroidsSurvival.Gameplay.Shot
         public void DestroyBullet()
         {
             IsDestroyed = true;
-            OnBulletDestroy?.Invoke(this);
+            if (OnBulletDestroy == null)
+            {
+                throw new NotImplementedException();
+            }
+            OnBulletDestroy(this);
         }
         #endregion
         

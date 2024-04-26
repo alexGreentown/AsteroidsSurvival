@@ -90,7 +90,11 @@ namespace AsteroidsSurvival.Gameplay.Enemy
 
                 Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
                 
-                OnMakeShot(_angleToPlayer, shipNosePosition);
+                if (OnMakeShot == null)
+                {
+                    throw new NotImplementedException();
+                }
+                OnMakeShot.Invoke(_angleToPlayer, shipNosePosition);
             }
         }
         #endregion

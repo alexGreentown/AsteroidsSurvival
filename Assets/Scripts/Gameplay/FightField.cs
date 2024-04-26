@@ -66,13 +66,23 @@ namespace AsteroidsSurvival.Gameplay
 
             _gameplayFightLogic.MyUpdate();
 
-            // in method DestroyBullet() destroyed bullets are added to the pool
-            // next they are removed from bulletsList because cant remove them from bulletsList in foreach loop
+            // check for IsDestroyed and remove from bullets list after _gameplayFightLogic.MyUpdate()
+            // because in _gameplayFightLogic.MyUpdate() is used foreach loop
             for (int i = _bulletsList.Count; i-- > 0;)
             {
                 if (_bulletsList[i].IsDestroyed)
                 {
                     _bulletsList.RemoveAt(i);
+                }
+            }
+            
+            // check for IsDestroyed and remove from enemies list after _gameplayFightLogic.MyUpdate()
+            // because in _gameplayFightLogic.MyUpdate() is used foreach loop
+            for (int i = _enemiesList.Count; i-- > 0;)
+            {
+                if (_enemiesList[i].IsDestroyed)
+                {
+                    _enemiesList.RemoveAt(i);
                 }
             }
         }
@@ -142,7 +152,7 @@ namespace AsteroidsSurvival.Gameplay
         {
             _playerController = _objectsFactory.CreatePlayer();
             
-           //_playerController.OnMakeShot += InitializeBullet;
+            _playerController.OnMakeShot += InitializeBullet;
             _playerController.OnPlayerKilled += OnPlayerKilled;
         }
 

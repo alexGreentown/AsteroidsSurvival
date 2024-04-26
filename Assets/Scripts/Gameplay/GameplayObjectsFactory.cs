@@ -40,6 +40,7 @@ namespace AsteroidsSurvival.Gameplay
             GameObject playerPrefab = _prefabsData.PlayerController;
             GameObject newObject = GameObject.Instantiate(playerPrefab, _fightContainer);
             PlayerController player = newObject.GetComponent<PlayerController>();
+            player.Initialize();
             
             InputControllerService inputControllerService = MyServiceLocator.Get<InputControllerService>();
             player.InputController = inputControllerService;

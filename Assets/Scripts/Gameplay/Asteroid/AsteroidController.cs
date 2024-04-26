@@ -72,11 +72,5 @@ namespace AsteroidsSurvival.View.Gameplay.Enemy
         }
         
         #endregion
-        
-        
-        
-        #region IFSMState implementation
-
-        #endregion
     }
 }

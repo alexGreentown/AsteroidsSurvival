@@ -6,8 +6,13 @@ namespace AsteroidsSurvival.Gameplay
 {
     public class GameplayFightLogic : ILogic
     {
+        #region Fields
         private FightField _fightField;
+        #endregion
 
+
+
+        #region Methods
         public void Initialize(FightField fightField)
         {
             _fightField = fightField;
@@ -23,14 +28,16 @@ namespace AsteroidsSurvival.Gameplay
 
                 if (bullet.BulletType == BulletType.ENEMY)
                 {
-                    CheckCollisionWithPlayer(bullet);
+                    CheckBulletCollisionWithPlayer(bullet);
                 }
 
                 if (bullet.BulletType == BulletType.PLAYER)
                 {
-                    CheckCollisionWithEnemies(bullet);
+                    CheckBulletCollisionWithEnemies(bullet);
                 }
             }
+
+            CheckPlayerCollisionWithEnemies();
 
             foreach (IEnemy enemy in _fightField.EnemiesList)
             {
@@ -38,7 +45,7 @@ namespace AsteroidsSurvival.Gameplay
             }
         }
 
-        private void CheckCollisionWithPlayer(BulletController bullet)
+        private void CheckBulletCollisionWithPlayer(BulletController bullet)
         {
             float distanceToPlayer = (bullet.transform.position - _fightField.PlayerController.transform.position).magnitude;
             if (distanceToPlayer < _fightField.PlayerController.Radius)
@@ -47,7 +54,7 @@ namespace AsteroidsSurvival.Gameplay
             }
         }
         
-        private void CheckCollisionWithEnemies(BulletController bullet)
+        private void CheckBulletCollisionWithEnemies(BulletController bullet)
         {
             foreach (IEnemy enemy in _fightField.EnemiesList)
             {
@@ -60,6 +67,18 @@ namespace AsteroidsSurvival.Gameplay
             }
         }
         
+        private void CheckPlayerCollisionWithEnemies()
+        {
+            foreach (IEnemy enemy in _fightField.EnemiesList)
+            {
+                float distanceToEnemy = (_fightField.PlayerController.transform.position - enemy.Transform.position).magnitude;
+                if (distanceToEnemy < enemy.Radius + _fightField.PlayerController.Radius - 10f)
+                {
+                    _fightField.PlayerController.PlayerKilled();
+                }
+            }
+        }
+        #endregion
+        
     }
-    
 }

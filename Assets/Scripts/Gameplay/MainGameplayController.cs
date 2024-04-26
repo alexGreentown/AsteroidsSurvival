@@ -14,7 +14,7 @@ namespace AsteroidsSurvival.Gameplay
         
         #region Fields
         [SerializeField] private GameplayInterfaceController _interfaceController;
-        [SerializeField] private GameplayFightController _fightController;
+        [SerializeField] private FightField _fightField;
         
         [SerializeField] private GameOverUI _gameOverController;
         
@@ -27,14 +27,14 @@ namespace AsteroidsSurvival.Gameplay
 
         private void OnEnable()
         {
-            _fightController.OnPlayerDataUpdate += _interfaceController.UpdatePlayerData;
-            _fightController.OnGameOver += OnGameOver;
+            _fightField.OnPlayerDataUpdate += _interfaceController.UpdatePlayerData;
+            _fightField.OnGameOver += OnGameOver;
         }
         
         private void OnDisable()
         {
-            _fightController.OnPlayerDataUpdate -= _interfaceController.UpdatePlayerData;
-            _fightController.OnGameOver -= OnGameOver;
+            _fightField.OnPlayerDataUpdate -= _interfaceController.UpdatePlayerData;
+            _fightField.OnGameOver -= OnGameOver;
         }
 
         #endregion
@@ -47,25 +47,25 @@ namespace AsteroidsSurvival.Gameplay
         {
             _gameOverController.gameObject.SetActive(false);
 
-            _fightController.Initialize();
+            _fightField.Initialize();
         }
         
         public void StartGameplay()
         {
-            _fightController.StartFight();
+            _fightField.StartFight();
         }
 
         private void OnGameOver()
         {
             _gameOverController.gameObject.SetActive(true);
-            _gameOverController.SetScoreText(_fightController.PlayerController.EnemiesKilled);
+            _gameOverController.SetScoreText(_fightField.PlayerController.EnemiesKilled);
             
             OnGameExit();
         }
 
         public void UpdateGame()
         {
-            _fightController.UpdateFight();
+            _fightField.UpdateFight();
         }
         
         #endregion

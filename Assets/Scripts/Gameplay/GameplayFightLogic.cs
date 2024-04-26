@@ -6,18 +6,18 @@ namespace AsteroidsSurvival.Gameplay
 {
     public class GameplayFightLogic : ILogic
     {
-        private GameplayFightController _fightController;
+        private FightField _fightField;
 
-        public void Initialize(GameplayFightController fightController)
+        public void Initialize(FightField fightField)
         {
-            _fightController = fightController;
+            _fightField = fightField;
         }
         
         public void MyUpdate()
         {
-            _fightController.PlayerController.UpdatePlayer();
+            _fightField.PlayerController.UpdatePlayer();
             
-            foreach (var bullet in _fightController.BulletsList)
+            foreach (var bullet in _fightField.BulletsList)
             {
                 bullet.UpdateBullet();
 
@@ -32,7 +32,7 @@ namespace AsteroidsSurvival.Gameplay
                 }
             }
 
-            foreach (IEnemy enemy in _fightController.EnemiesList)
+            foreach (IEnemy enemy in _fightField.EnemiesList)
             {
                 enemy.UpdateEnemy();
             }
@@ -40,21 +40,21 @@ namespace AsteroidsSurvival.Gameplay
 
         private void CheckCollisionWithPlayer(BulletController bullet)
         {
-            float distanceToPlayer = (bullet.transform.position - _fightController.PlayerController.transform.position).magnitude;
+            float distanceToPlayer = (bullet.transform.position - _fightField.PlayerController.transform.position).magnitude;
             if (distanceToPlayer < 25f)
             {
-                _fightController.PlayerController.PlayerKilled();
+                _fightField.PlayerController.PlayerKilled();
             }
         }
         
         private void CheckCollisionWithEnemies(BulletController bullet)
         {
-            foreach (IEnemy enemy in _fightController.EnemiesList)
+            foreach (IEnemy enemy in _fightField.EnemiesList)
             {
                 float distanceToEnemy = (bullet.transform.position - enemy.Transform.position).magnitude;
                 if (distanceToEnemy < enemy.Radius)
                 {
-                    _fightController.EnemyKilled(enemy);
+                    _fightField.EnemyKilled(enemy);
                     bullet.DestroyBullet();
                 }
             }

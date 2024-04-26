@@ -6,13 +6,11 @@ using AsteroidsSurvival.View;
 using UnityEngine;
 using AsteroidsSurvival.Gameplay.Player;
 using AsteroidsSurvival.Gameplay.Shot;
-using AsteroidsSurvival.ServiceLocator;
-using AsteroidsSurvival.Services;
 using AsteroidsSurvival.View.Gameplay.Enemy;
 
 namespace AsteroidsSurvival.Gameplay
 {
-    public class GameplayFightController : MonoBehaviour, IView
+    public class FightField : MonoBehaviour, IView
     {
         #region Events
         public event Action<PlayerDataSet> OnPlayerDataUpdate;

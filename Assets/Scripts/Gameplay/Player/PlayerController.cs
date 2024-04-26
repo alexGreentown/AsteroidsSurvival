@@ -31,6 +31,8 @@ namespace AsteroidsSurvival.Gameplay.Player
         }
 
         public int EnemiesKilled { get; set; }
+        
+        public float Radius => 25f;
 
         #endregion
         
@@ -60,16 +62,15 @@ namespace AsteroidsSurvival.Gameplay.Player
                 _inputController.LaserValue = false;
 
                 // we add distance from center point to the nose of the ship from where the shot exits
-                float shipLength = 15f;
                 Vector2 bulletOffset = new Vector2();
-                bulletOffset.x = Mathf.Sin(_rotation * Mathf.Deg2Rad) * shipLength;
-                bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * shipLength;
+                bulletOffset.x = Mathf.Sin(_rotation * Mathf.Deg2Rad) * Radius;
+                bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * Radius;
 
                 Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
 
                 if (OnMakeShot == null)
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("OnMakeShot event is missing");
                 }
                 OnMakeShot(_rotation, shipNosePosition);
             }
@@ -144,7 +145,7 @@ namespace AsteroidsSurvival.Gameplay.Player
         {
             if (OnPlayerKilled == null)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("OnPlayerKilled event is missing");
             }
             OnPlayerKilled.Invoke();
         }

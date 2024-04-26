@@ -41,7 +41,7 @@ namespace AsteroidsSurvival.Gameplay
         private void CheckCollisionWithPlayer(BulletController bullet)
         {
             float distanceToPlayer = (bullet.transform.position - _fightField.PlayerController.transform.position).magnitude;
-            if (distanceToPlayer < 25f)
+            if (distanceToPlayer < _fightField.PlayerController.Radius)
             {
                 _fightField.PlayerController.PlayerKilled();
             }

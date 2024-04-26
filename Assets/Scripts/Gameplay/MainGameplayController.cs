@@ -62,7 +62,7 @@ namespace AsteroidsSurvival.Gameplay
 
             if (OnGameExit == null)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("OnGameExit event is missing");
             }
             OnGameExit.Invoke();
         }

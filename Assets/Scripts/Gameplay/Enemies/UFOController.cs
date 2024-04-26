@@ -42,12 +42,6 @@ namespace AsteroidsSurvival.Gameplay.Enemy
 
             IsDestroyed = false;
             
-            // place UFO on a random position
-            Vector2 position = new();
-            position.x = Random.Range(0f, Screen.width);
-            position.y = Random.Range(0f, Screen.height);
-            transform.position = position;
-            
             // Start flying in a random direction
             float rotation = Random.Range(0f, 360f);
             _movementVector.x = Mathf.Sin(rotation * Mathf.Deg2Rad);
@@ -83,16 +77,15 @@ namespace AsteroidsSurvival.Gameplay.Enemy
                 _shootingTimer = 0f;
 
                 // we add distance from center point to the nose of the ship from where the shot exits
-                float shipLength = 15f;
                 Vector2 bulletOffset = new Vector2();
-                bulletOffset.x = Mathf.Sin(_angleToPlayer * Mathf.Deg2Rad) * shipLength;
-                bulletOffset.y = Mathf.Cos(_angleToPlayer * Mathf.Deg2Rad) * shipLength;
+                bulletOffset.x = Mathf.Sin(_angleToPlayer * Mathf.Deg2Rad) * Radius;
+                bulletOffset.y = Mathf.Cos(_angleToPlayer * Mathf.Deg2Rad) * Radius;
 
                 Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
                 
                 if (OnMakeShot == null)
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("OnMakeShot event is missing");
                 }
                 OnMakeShot.Invoke(_angleToPlayer, shipNosePosition);
             }
@@ -114,11 +107,6 @@ namespace AsteroidsSurvival.Gameplay.Enemy
             UpdateAim();
 
             UpdateShot();
-        }
-       
-        public void OnHitPlayer()
-        {
-            throw new System.NotImplementedException();
         }
         #endregion
 

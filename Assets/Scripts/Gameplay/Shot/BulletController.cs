@@ -78,18 +78,9 @@ namespace AsteroidsSurvival.Gameplay.Shot
             IsDestroyed = true;
             if (OnBulletDestroy == null)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("OnBulletDestroy event is missing");
             }
             OnBulletDestroy(this);
-        }
-        #endregion
-        
-        
-        
-        #region IMoving implementation
-        public override void MoveTo(Vector3 targetPosition)
-        {
-            base.MoveTo(targetPosition);
         }
         #endregion
     }

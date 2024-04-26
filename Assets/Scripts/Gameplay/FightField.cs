@@ -91,6 +91,48 @@ namespace AsteroidsSurvival.Gameplay
             _asteroidsCreateDelay = _objectsFactory.GetAsteroidsDelayValue();
             _UFOCreateDelay = _objectsFactory.GetUFODelayValue();
         }
+
+        private void PlaceOnEmptyCell(IEnemy newEnemy)
+        {
+            // place newEnemy on a random position
+            Vector2 position;
+            position.x = UnityEngine.Random.Range(0f, Screen.width);
+            position.y = UnityEngine.Random.Range(0f, Screen.height);
+            // make sure there is no player or other enemy on that point
+            while (!IsEmptyCell(position, newEnemy))
+            {
+                position.x = UnityEngine.Random.Range(0f, Screen.width);
+                position.y = UnityEngine.Random.Range(0f, Screen.height);
+            }
+            
+            newEnemy.Transform.position = position;
+        }
+
+        /// <summary>
+        /// return true if newEnemy position is not occupied by another enemy or player
+        /// </summary>
+        private bool IsEmptyCell(Vector2 position, IEnemy newEnemy)
+        {
+            Vector2 positionDifference;
+            foreach (var enemy in _enemiesList)
+            {
+                positionDifference.x = position.x - newEnemy.Transform.position.x;
+                positionDifference.y = position.y - newEnemy.Transform.position.y;
+                if (positionDifference.magnitude <= newEnemy.Radius + enemy.Radius)
+                {
+                    return true;
+                }
+            }
+            
+            positionDifference.x = position.x - _playerController.transform.position.x;
+            positionDifference.y = position.y - _playerController.transform.position.y;
+            if (positionDifference.magnitude <= newEnemy.Radius + _playerController.Radius)
+            {
+                return true;
+            }
+
+            return false;
+        }
         #endregion
         
         
@@ -100,7 +142,7 @@ namespace AsteroidsSurvival.Gameplay
         {
             _playerController = _objectsFactory.CreatePlayer();
             
-            _playerController.OnMakeShot += InitializeBullet;
+           //_playerController.OnMakeShot += InitializeBullet;
             _playerController.OnPlayerKilled += OnPlayerKilled;
         }
 
@@ -114,7 +156,7 @@ namespace AsteroidsSurvival.Gameplay
             
             if (OnGameOver == null)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("OnGameOver event is missing");
             }
             OnGameOver();
         }
@@ -137,12 +179,15 @@ namespace AsteroidsSurvival.Gameplay
                 yield return new WaitForSeconds(_UFOCreateDelay);
                 UFOController newUFO = _objectsFactory.CreateUFO();
                 newUFO.Initialize(_playerController);
+
+                PlaceOnEmptyCell(newUFO);
                 
                 newUFO.OnMakeShot += InitializeEnemyBullet;
                 
                 EnemiesList.Add(newUFO);
             }
         }
+
         #endregion
 
 

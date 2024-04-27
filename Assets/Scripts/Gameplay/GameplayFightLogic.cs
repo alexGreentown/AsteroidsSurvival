@@ -72,7 +72,7 @@ namespace AsteroidsSurvival.Gameplay
             foreach (IEnemy enemy in _fightField.EnemiesList)
             {
                 float distanceToEnemy = (_fightField.PlayerController.transform.position - enemy.Transform.position).magnitude;
-                if (distanceToEnemy < enemy.Radius + _fightField.PlayerController.Radius - 10f)
+                if (distanceToEnemy < enemy.Radius + _fightField.PlayerController.Radius - 15f)
                 {
                     _fightField.PlayerController.PlayerKilled();
                 }

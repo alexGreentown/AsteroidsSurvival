@@ -126,11 +126,11 @@ namespace AsteroidsSurvival.Gameplay
             Vector2 positionDifference;
             foreach (var enemy in _enemiesList)
             {
-                positionDifference.x = position.x - newEnemy.Transform.position.x;
-                positionDifference.y = position.y - newEnemy.Transform.position.y;
+                positionDifference.x = position.x - enemy.Transform.position.x;
+                positionDifference.y = position.y - enemy.Transform.position.y;
                 if (positionDifference.magnitude <= newEnemy.Radius + enemy.Radius)
                 {
-                    return true;
+                    return false;
                 }
             }
             
@@ -138,10 +138,10 @@ namespace AsteroidsSurvival.Gameplay
             positionDifference.y = position.y - _playerController.transform.position.y;
             if (positionDifference.magnitude <= newEnemy.Radius + _playerController.Radius)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
         #endregion
         
@@ -210,6 +210,7 @@ namespace AsteroidsSurvival.Gameplay
             for (int i = 0; i < initialAsteroidsNum; i++)
             {
                 AsteroidController newAsteroid = _objectsFactory.CreateAsteroid();
+                PlaceOnEmptyCell(newAsteroid);
                 EnemiesList.Add(newAsteroid);
             }
 
@@ -222,6 +223,7 @@ namespace AsteroidsSurvival.Gameplay
             {
                 yield return new WaitForSeconds(_asteroidsCreateDelay);
                 AsteroidController newAsteroid = _objectsFactory.CreateAsteroid();
+                PlaceOnEmptyCell(newAsteroid);
                 EnemiesList.Add(newAsteroid);
             }
         }

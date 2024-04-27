@@ -29,13 +29,6 @@ namespace AsteroidsSurvival.View.Gameplay.Enemy
         
         public void Initialize()
         {
-            // place Asteroid on a random position
-            Vector2 position = new();
-            position.x = Random.Range(0f, Screen.width);
-            position.y = Random.Range(0f, Screen.height);
-            
-            transform.position = position;
-            
             // Start flying in a random direction
             float direction = Random.Range(0f, 360f);
             _movementVector.x = Mathf.Sin(direction * Mathf.Deg2Rad);

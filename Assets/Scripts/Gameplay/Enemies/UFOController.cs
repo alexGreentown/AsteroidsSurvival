@@ -18,7 +18,7 @@ namespace AsteroidsSurvival.Gameplay.Enemy
         [SerializeField] private Transform _content;
         
         private Vector3 _movementVector;
-        private float _speedFactor = 5f;
+        private float _speedFactor = 25f;
 
         private PlayerController _playerController;
         private float _angleToPlayer;
@@ -53,6 +53,9 @@ namespace AsteroidsSurvival.Gameplay.Enemy
 
         private void UpdatePosition()
         {
+            _movementVector.x = Mathf.Sin(_angleToPlayer * Mathf.Deg2Rad);
+            _movementVector.y = Mathf.Cos(_angleToPlayer * Mathf.Deg2Rad);
+            
             Vector3 tempVector = transform.position;
             tempVector.x += _movementVector.x * Time.deltaTime * _speedFactor;
             tempVector.y += _movementVector.y * Time.deltaTime * _speedFactor;

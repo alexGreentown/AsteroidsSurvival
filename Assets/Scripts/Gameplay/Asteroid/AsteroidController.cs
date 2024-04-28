@@ -1,14 +1,16 @@
 using AsteroidsSurvival.Gameplay;
 using AsteroidsSurvival.Gameplay.Player;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace AsteroidsSurvival.View.Gameplay.Enemy
+namespace AsteroidsSurvival.View.Gameplay.Asteroid
 {
     public class AsteroidController : PortalMovingBase, IEnemy
     {
         #region Fields and properties
         [SerializeField] private float _radius = 5f;
         [SerializeField] private Transform _content;
+        [SerializeField] private Image _graphics;
         
         private Vector3 _movementVector = new();
         private float _speedFactor = 50f;
@@ -20,6 +22,13 @@ namespace AsteroidsSurvival.View.Gameplay.Enemy
         public float Radius => _radius;
         
         public Transform Transform => transform;
+        
+        private IAsteroidStrategy _asteroidStrategy = new AsteroidStrategyBig();
+        public IAsteroidStrategy AsteroidStrategy
+        {
+            get => _asteroidStrategy;
+            set => _asteroidStrategy = value;
+        }
 
         #endregion
         
@@ -27,12 +36,16 @@ namespace AsteroidsSurvival.View.Gameplay.Enemy
         
         #region Methods
         
-        public void Initialize()
+        public void Initialize(float? directionAngle = null)
         {
-            // Start flying in a random direction
-            float direction = Random.Range(0f, 360f);
-            _movementVector.x = Mathf.Sin(direction * Mathf.Deg2Rad);
-            _movementVector.y = Mathf.Cos(direction * Mathf.Deg2Rad);
+            _radius = AsteroidStrategy.Radius;
+            _speedFactor = AsteroidStrategy.SpeedFactor;
+            AsteroidStrategy.SetGraphics(_graphics);
+
+            float randomDirection = Random.Range(0f, 360f);
+            float movementAngle = directionAngle ?? randomDirection;
+            _movementVector.x = Mathf.Sin(movementAngle * Mathf.Deg2Rad);
+            _movementVector.y = Mathf.Cos(movementAngle * Mathf.Deg2Rad);
 
             float rotationSpeed = Random.Range(-50f, 50f);
             _rotationVector = new Vector3(0f, 0f, rotationSpeed);

@@ -21,5 +21,8 @@ namespace AsteroidsSurvival.Services
         public Sprite GraphicsEnemyBullet;
         public Sprite GraphicsPlayerBullet;
         
+        public Sprite GraphicsAsteroidBig;
+        public Sprite GraphicsAsteroidSmall;
+        
     }
 }

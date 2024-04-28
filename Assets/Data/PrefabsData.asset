@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainMenuUIController: {fileID: 3306872886171397659, guid: aa5c46f1708c4cd418f982749087a2c2, type: 3}
   GameplayUIController: {fileID: 6622497680553482440, guid: 67846c8378d16014e94d5a35d8d37703, type: 3}
-  GameOverUIController: {fileID: 0}
   PlayerController: {fileID: 4580914509286184577, guid: 63ef726405589fa478937189907bfa35, type: 3}
   AsteroidController: {fileID: 4237269446145651658, guid: a8f0218a6855faf47af10fb449a518a1, type: 3}
   UFOController: {fileID: 7603252292092057701, guid: e8df9e832aaa10a48888b9f2b66fe429, type: 3}
@@ -24,3 +23,5 @@ MonoBehaviour:
   UFOCreateDelayValue: 8
   GraphicsEnemyBullet: {fileID: 424603535, guid: ba379193ac8bbd149862d16dc0413a3c, type: 3}
   GraphicsPlayerBullet: {fileID: 1790542230, guid: ba379193ac8bbd149862d16dc0413a3c, type: 3}
+  GraphicsAsteroidBig: {fileID: 21300000, guid: ee8261317c1ff734daa9da91d24312b3, type: 3}
+  GraphicsAsteroidSmall: {fileID: 21300000, guid: 0f3a720ed8c07f14ea6b92d6fefc8c0c, type: 3}

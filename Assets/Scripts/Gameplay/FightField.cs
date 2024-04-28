@@ -6,7 +6,7 @@ using AsteroidsSurvival.View;
 using UnityEngine;
 using AsteroidsSurvival.Gameplay.Player;
 using AsteroidsSurvival.Gameplay.Shot;
-using AsteroidsSurvival.View.Gameplay.Enemy;
+using AsteroidsSurvival.View.Gameplay.Asteroid;
 
 namespace AsteroidsSurvival.Gameplay
 {
@@ -271,6 +271,24 @@ namespace AsteroidsSurvival.Gameplay
 
         public void EnemyKilled(IEnemy enemy)
         {
+            if (enemy is AsteroidController asteroid)
+            {
+                if (asteroid.AsteroidStrategy is AsteroidStrategyBig)
+                {
+                    float randomDirection = UnityEngine.Random.Range(0f, 360f);
+                    
+                    asteroid.AsteroidStrategy = new AsteroidStrategySmall();
+                    asteroid.Initialize(randomDirection + 25f);
+                    
+                    AsteroidController secondAsteroid = _objectsFactory.CreateAsteroid();
+                    secondAsteroid.AsteroidStrategy = new AsteroidStrategySmall();
+                    secondAsteroid.Initialize(randomDirection - 25f);
+                    secondAsteroid.Transform.position = asteroid.Transform.position;
+                    EnemiesList.Add(secondAsteroid);
+                    return;
+                }
+            }
+            
             GameObject explosion = _objectsFactory.CreateExplosion();
             MonoBehaviour enemyTransform = enemy as MonoBehaviour; 
             explosion.transform.position = enemyTransform.transform.position;

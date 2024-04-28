@@ -6,7 +6,7 @@ using AsteroidsSurvival.Gameplay.Shot;
 using AsteroidsSurvival.Interfaces;
 using AsteroidsSurvival.ServiceLocator;
 using AsteroidsSurvival.Services;
-using AsteroidsSurvival.View.Gameplay.Enemy;
+using AsteroidsSurvival.View.Gameplay.Asteroid;
 using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay

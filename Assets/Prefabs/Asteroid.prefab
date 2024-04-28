@@ -96,6 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _radius: 40
   _content: {fileID: 3184485911417106845}
+  _graphics: {fileID: 2837876008204988107}
 --- !u!1 &7933054809480142447
 GameObject:
   m_ObjectHideFlags: 0

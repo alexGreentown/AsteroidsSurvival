@@ -25,12 +25,12 @@
                 },
                 {
                     "name": "Laser",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b622308a-1f3e-43da-b982-bfd551e23750",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Start",
@@ -179,7 +179,7 @@
                     "name": "",
                     "id": "13a34da7-d270-4d49-9fc1-122c0886c59c",
                     "path": "<Keyboard>/space",
-                    "interactions": "",
+                    "interactions": "Press(pressPoint=0.11,behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Laser",

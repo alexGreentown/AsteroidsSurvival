@@ -20,6 +20,7 @@ namespace AsteroidsSurvival.Gameplay
         
         
         #region Fields and Properties
+        
         private PlayerController _playerController;
         private List<IEnemy> _enemiesList = new();
         private List<BulletController> _bulletsList = new();
@@ -153,13 +154,15 @@ namespace AsteroidsSurvival.Gameplay
             _playerController = _objectsFactory.CreatePlayer();
             
             _playerController.OnMakeShot += InitializeBullet;
-            _playerController.OnPlayerKilled += OnPlayerKilled;
+            _playerController.OnPlayerKilled += KillPlayer;
+
+            _gameplayFightLogic.SetPlayerTransform();
         }
 
-        private void OnPlayerKilled()
+        private void KillPlayer()
         {
             _playerController.OnMakeShot -= InitializeBullet;
-            _playerController.OnPlayerKilled -= OnPlayerKilled;
+            _playerController.OnPlayerKilled -= KillPlayer;
             
             StopCoroutine(CreateUFOCoroutine);
             StopCoroutine(CreateAsteroidsCoroutine);
@@ -283,5 +286,6 @@ namespace AsteroidsSurvival.Gameplay
             _playerController.EnemiesKilled++;
         }
         #endregion
+        
     }
 }

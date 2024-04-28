@@ -1,5 +1,6 @@
 using AsteroidsSurvival.Services;
 using System;
+using AsteroidsSurvival.Gameplay.Shot;
 using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay.Player
@@ -24,7 +25,10 @@ namespace AsteroidsSurvival.Gameplay.Player
 
         [SerializeField] private Transform _contentTransform;
         [SerializeField] private GameObject _flameObject;
-
+        [SerializeField] private GameObject _laserLines;
+        [SerializeField] private LaserController _laserController;
+        public bool IsLaserActive { get; private set; }
+    
         public InputControllerService InputController
         {
             set => _inputController = value;
@@ -33,6 +37,10 @@ namespace AsteroidsSurvival.Gameplay.Player
         public int EnemiesKilled { get; set; }
         
         public float Radius => 25f;
+
+        public LaserController LaserController => _laserController;
+
+        public Vector2[] LaserRectangle = new Vector2[4];
 
         #endregion
         
@@ -51,15 +59,15 @@ namespace AsteroidsSurvival.Gameplay.Player
             UpdateFlame();
             UpdateRotation();
             UpdateShot();
+            UpdateLaser();
             MovePlayer();
         }
 
         private void UpdateShot()
         {
-            if (_inputController.ShootValue || _inputController.LaserValue)
+            if (_inputController.ShootValue)
             {
                 _inputController.ShootValue = false;
-                _inputController.LaserValue = false;
 
                 // we add distance from center point to the nose of the ship from where the shot exits
                 Vector2 bulletOffset = new Vector2();
@@ -80,12 +88,32 @@ namespace AsteroidsSurvival.Gameplay.Player
         {
             if (_inputController.LaserValue)
             {
-                MakeLaser();
-            }
-            
-            void MakeLaser()
-            {
+                if (IsLaserActive)
+                {
+                    _laserController.UpdateSparks();
+                    return;
+                }
+                IsLaserActive = true;
                 
+                // Initialize Laser
+                // we add distance from center point to the nose of the ship from where the shot exits
+                Vector2 bulletOffset = new Vector2();
+                float laserOffset = 12f;
+                bulletOffset.x = Mathf.Sin(_rotation * Mathf.Deg2Rad) * laserOffset;
+                bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * laserOffset;
+
+                Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
+                
+                _laserLines.SetActive(true);
+                
+                LaserController.Initialize(_rotation, shipNosePosition);
+            }
+            else
+            {
+                // switch off Laser
+                IsLaserActive = false;
+                _laserLines.SetActive(false);
+                LaserController.SwitchOff();
             }
         }
 

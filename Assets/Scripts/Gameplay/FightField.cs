@@ -86,6 +86,28 @@ namespace AsteroidsSurvival.Gameplay
                     _enemiesList.RemoveAt(i);
                 }
             }
+
+            for (int i = _enemiesList.Count; i-- > 0;)
+            {
+                if (_enemiesList[i].IsDivided)
+                {
+                    if (_enemiesList[i] is AsteroidController asteroid)
+                    {
+                        _enemiesList[i].IsDivided = false;
+                        float randomDirection = UnityEngine.Random.Range(0f, 360f);
+                        asteroid.AsteroidStrategy = new AsteroidStrategySmall();
+                        asteroid.Initialize(randomDirection + 25f);
+                        
+                        AsteroidController secondAsteroid = _objectsFactory.CreateAsteroid();
+                        secondAsteroid.AsteroidStrategy = new AsteroidStrategySmall();
+                        secondAsteroid.Initialize(randomDirection - 25f);
+                        secondAsteroid.Transform.position = asteroid.Transform.position;
+                        
+                        EnemiesList.Add(secondAsteroid);
+                        return;
+                    }
+                }
+            }
         }
         
         public void StartFight()
@@ -275,16 +297,7 @@ namespace AsteroidsSurvival.Gameplay
             {
                 if (asteroid.AsteroidStrategy is AsteroidStrategyBig)
                 {
-                    float randomDirection = UnityEngine.Random.Range(0f, 360f);
-                    
-                    asteroid.AsteroidStrategy = new AsteroidStrategySmall();
-                    asteroid.Initialize(randomDirection + 25f);
-                    
-                    AsteroidController secondAsteroid = _objectsFactory.CreateAsteroid();
-                    secondAsteroid.AsteroidStrategy = new AsteroidStrategySmall();
-                    secondAsteroid.Initialize(randomDirection - 25f);
-                    secondAsteroid.Transform.position = asteroid.Transform.position;
-                    EnemiesList.Add(secondAsteroid);
+                    asteroid.IsDivided = true;
                     return;
                 }
             }
@@ -301,6 +314,7 @@ namespace AsteroidsSurvival.Gameplay
                 ufo.OnMakeShot -= InitializeEnemyBullet;
             }
 
+            _playerController.IncreaseBullets();
             _playerController.EnemiesKilled++;
         }
         #endregion

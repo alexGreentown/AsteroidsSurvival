@@ -81,7 +81,7 @@ namespace AsteroidsSurvival.Gameplay
         public Vector2 Coordinates = new();
         public float Angle;
         public float Speed;
-        public int LaserCount;
+        public int BulletsCount;
         public float LaserFill;
         public int Score;
     }

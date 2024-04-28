@@ -23,6 +23,8 @@ namespace AsteroidsSurvival.View.Gameplay.Asteroid
         
         public Transform Transform => transform;
         
+        public bool IsDivided { get; set; }
+        
         private IAsteroidStrategy _asteroidStrategy = new AsteroidStrategyBig();
         public IAsteroidStrategy AsteroidStrategy
         {

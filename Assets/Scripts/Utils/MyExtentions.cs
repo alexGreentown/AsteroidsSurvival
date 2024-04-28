@@ -12,7 +12,7 @@ namespace AsteroidsSurvival.Utils
 
         public static void Log(this string str)
         {
-            Debug.Log("Log: " + str);
+            Debug.Log(str);
         }
 
     }

@@ -19,14 +19,16 @@ namespace AsteroidsSurvival.Gameplay.Player
 
         private float _rotation = 0f;
 
-        private float _laserFill = 0f;
-
         private Vector3 _movementVector = new ();
 
         [SerializeField] private Transform _contentTransform;
         [SerializeField] private GameObject _flameObject;
         [SerializeField] private GameObject _laserLines;
         [SerializeField] private LaserController _laserController;
+
+        private float _laserFill = 1f;
+        private int _bulletsCount = 10;
+
         public bool IsLaserActive { get; private set; }
     
         public InputControllerService InputController
@@ -41,7 +43,7 @@ namespace AsteroidsSurvival.Gameplay.Player
         public LaserController LaserController => _laserController;
 
         public Vector2[] LaserRectangle = new Vector2[4];
-
+        private bool _isLaserDepleted;
         #endregion
         
         
@@ -67,6 +69,12 @@ namespace AsteroidsSurvival.Gameplay.Player
         {
             if (_inputController.ShootValue)
             {
+                if (_bulletsCount == 0)
+                {
+                    return;
+                }
+                _bulletsCount--;
+                
                 _inputController.ShootValue = false;
 
                 // we add distance from center point to the nose of the ship from where the shot exits
@@ -86,8 +94,16 @@ namespace AsteroidsSurvival.Gameplay.Player
         
         private void UpdateLaser()
         {
-            if (_inputController.LaserValue)
+            if (_inputController.LaserValue && _laserFill > 0f && !_isLaserDepleted)
             {
+                float laserSpendSpeed = 1f;
+                _laserFill -= Time.deltaTime * laserSpendSpeed;
+                if (_laserFill <= 0f)
+                {
+                    _isLaserDepleted = true;
+                    _laserFill = 0f;
+                }
+                
                 if (IsLaserActive)
                 {
                     _laserController.UpdateSparks();
@@ -114,12 +130,23 @@ namespace AsteroidsSurvival.Gameplay.Player
                 IsLaserActive = false;
                 _laserLines.SetActive(false);
                 LaserController.SwitchOff();
+                if (_laserFill > 0.2f)
+                {
+                    _isLaserDepleted = false;
+                }
+            }
+            
+            float laserFillSpeed = .2f;
+            _laserFill += Time.deltaTime * laserFillSpeed;
+            if (_laserFill > 1f)
+            {
+                _laserFill = 1f;
             }
         }
 
         private void UpdateSpeed()
         {
-            float accelerationFactor = 100f;
+            float accelerationFactor = 200f;
             if (_inputController.MoveValue.y > 0)
             {
                 Vector3 forceVector = new Vector3(Mathf.Sin(_rotation * Mathf.Deg2Rad), Mathf.Cos(_rotation * Mathf.Deg2Rad));
@@ -136,7 +163,7 @@ namespace AsteroidsSurvival.Gameplay.Player
         
         private void UpdateRotation()
         {
-            float rotationFactor = 80f;
+            float rotationFactor = 150f;
             if (_inputController.MoveValue.x > 0)
             {
                 _rotation += Time.deltaTime * rotationFactor;
@@ -157,6 +184,11 @@ namespace AsteroidsSurvival.Gameplay.Player
             
             MoveTo(tempVector);
         }
+        
+        public void IncreaseBullets()
+        {
+            _bulletsCount += 3;
+        }
 
         public void GetPlayerData(in PlayerDataSet playerDataSet)
         {
@@ -164,8 +196,8 @@ namespace AsteroidsSurvival.Gameplay.Player
             playerDataSet.Coordinates.x = transform.position.x;
             playerDataSet.Coordinates.y = transform.position.y;
             playerDataSet.Speed = _movementVector.magnitude;
-            playerDataSet.LaserCount = 22;
-            playerDataSet.LaserFill = 0.5f;
+            playerDataSet.BulletsCount = _bulletsCount;
+            playerDataSet.LaserFill = _laserFill;
             playerDataSet.Score = EnemiesKilled;
         }
 
@@ -179,5 +211,7 @@ namespace AsteroidsSurvival.Gameplay.Player
         }
         
         #endregion
+
+       
     }
 }

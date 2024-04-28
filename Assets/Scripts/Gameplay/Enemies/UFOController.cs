@@ -27,6 +27,7 @@ namespace AsteroidsSurvival.Gameplay.Enemy
         private float _shootingTimer;
 
         public bool IsDestroyed { get; set; }
+        public bool IsDivided { get; set; }
 
         public float Radius => _radius;
         public Transform Transform => transform;

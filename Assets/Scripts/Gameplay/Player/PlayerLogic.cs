@@ -56,7 +56,7 @@ namespace AsteroidsSurvival.Gameplay.Player
             if (_bulletIncreaseTimer <= 0f)
             {
                 _bulletIncreaseTimer = _bulletIncreaseInterval;
-                _playerController.IncreaseBullets();
+                _playerController.AcceptVisit();
             }
         }
 

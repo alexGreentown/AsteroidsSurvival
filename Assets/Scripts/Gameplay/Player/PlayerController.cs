@@ -1,11 +1,12 @@
 using AsteroidsSurvival.Services;
 using System;
 using AsteroidsSurvival.Gameplay.Shot;
+using AsteroidsSurvival.Interfaces;
 using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay.Player
 {
-    public class PlayerController : PortalMovingBase
+    public class PlayerController : PortalMovingBase, IVisited
     {
         #region Events
         public event Action<float, Vector2> OnMakeShot;
@@ -35,6 +36,8 @@ namespace AsteroidsSurvival.Gameplay.Player
         public LaserController LaserController => _laserController;
         public GameObject FlameObject => _flameObject;
 
+        private PlayerLogic _playerLogic = new();
+        
         public float LaserFill
         {
             get => _laserFill;
@@ -56,9 +59,6 @@ namespace AsteroidsSurvival.Gameplay.Player
             get => _rotation;
             set => _rotation = value;
         }
-
-
-        private PlayerLogic _playerLogic = new();
         #endregion
 
 
@@ -118,9 +118,15 @@ namespace AsteroidsSurvival.Gameplay.Player
             }
             OnMakeShot(rotation, shipNosePosition);
         }
-        
         #endregion
 
        
+
+        #region IVisited implementation
+        public void AcceptVisit()
+        {
+            IncreaseBullets();
+        }
+        #endregion
     }
 }

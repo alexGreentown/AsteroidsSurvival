@@ -1,4 +1,3 @@
-using AsteroidsSurvival.Utils;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,7 @@ namespace AsteroidsSurvival.Gameplay.Shot
         ENEMY
     }
     
-    public class BulletController : PortalMovingBase, IShot
+    public class BulletController : PortalMovingBase
     {
         #region Events
         public event Action<BulletController> OnBulletDestroy;

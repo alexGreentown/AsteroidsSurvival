@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay
 {
-    public class GameplayFightLogic : ILogic
+    public class GameplayFightLogic : ILogic, IVisitor
     {
         #region Fields
         private FightField _fightField;

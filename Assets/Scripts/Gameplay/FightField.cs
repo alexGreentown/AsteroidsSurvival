@@ -314,7 +314,6 @@ namespace AsteroidsSurvival.Gameplay
                 ufo.OnMakeShot -= InitializeEnemyBullet;
             }
 
-            _playerController.IncreaseBullets();
             _playerController.EnemiesKilled++;
         }
         #endregion

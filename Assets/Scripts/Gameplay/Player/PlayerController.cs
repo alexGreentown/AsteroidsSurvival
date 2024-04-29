@@ -19,8 +19,6 @@ namespace AsteroidsSurvival.Gameplay.Player
 
         private float _rotation = 0f;
 
-        private Vector3 _movementVector = new ();
-
         [SerializeField] private Transform _contentTransform;
         [SerializeField] private GameObject _flameObject;
         [SerializeField] private GameObject _laserLines;
@@ -29,21 +27,48 @@ namespace AsteroidsSurvival.Gameplay.Player
         private float _laserFill = 1f;
         private int _bulletsCount = 10;
 
-        public bool IsLaserActive { get; private set; }
-    
-        public InputControllerService InputController
-        {
-            set => _inputController = value;
-        }
-
+        public bool IsLaserActive { get; set; }
         public int EnemiesKilled { get; set; }
         
         public float Radius => 25f;
 
         public LaserController LaserController => _laserController;
+        public GameObject FlameObject => _flameObject;
 
-        public Vector2[] LaserRectangle = new Vector2[4];
-        private bool _isLaserDepleted;
+        public float LaserFill
+        {
+            get => _laserFill;
+            set => _laserFill = value;
+        }
+
+        public GameObject LaserLines => _laserLines;
+
+        public Transform ContentTransform => _contentTransform;
+
+        public int BulletsCount
+        {
+            get => _bulletsCount;
+            set => _bulletsCount = value;
+        }
+
+        public float Rotation
+        {
+            get => _rotation;
+            set => _rotation = value;
+        }
+
+
+        private PlayerLogic _playerLogic = new();
+        #endregion
+
+
+
+        #region Unity Lifecycle
+        private void Awake()
+        {
+            _playerLogic.Initialize(this);
+        }
+
         #endregion
         
         
@@ -57,146 +82,21 @@ namespace AsteroidsSurvival.Gameplay.Player
         
         public void UpdatePlayer()
         {
-            UpdateSpeed();
-            UpdateFlame();
-            UpdateRotation();
-            UpdateShot();
-            UpdateLaser();
-            MovePlayer();
+            _playerLogic.MyUpdate();
         }
-
-        private void UpdateShot()
-        {
-            if (_inputController.ShootValue)
-            {
-                if (_bulletsCount == 0)
-                {
-                    return;
-                }
-                _bulletsCount--;
-                
-                _inputController.ShootValue = false;
-
-                // we add distance from center point to the nose of the ship from where the shot exits
-                Vector2 bulletOffset = new Vector2();
-                bulletOffset.x = Mathf.Sin(_rotation * Mathf.Deg2Rad) * Radius;
-                bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * Radius;
-
-                Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
-
-                if (OnMakeShot == null)
-                {
-                    throw new NotImplementedException("OnMakeShot event is missing");
-                }
-                OnMakeShot(_rotation, shipNosePosition);
-            }
-        }
-        
-        private void UpdateLaser()
-        {
-            if (_inputController.LaserValue && _laserFill > 0f && !_isLaserDepleted)
-            {
-                float laserSpendSpeed = 1f;
-                _laserFill -= Time.deltaTime * laserSpendSpeed;
-                if (_laserFill <= 0f)
-                {
-                    _isLaserDepleted = true;
-                    _laserFill = 0f;
-                }
-                
-                if (IsLaserActive)
-                {
-                    _laserController.UpdateSparks();
-                    return;
-                }
-                IsLaserActive = true;
-                
-                // Initialize Laser
-                // we add distance from center point to the nose of the ship from where the shot exits
-                Vector2 bulletOffset = new Vector2();
-                float laserOffset = 12f;
-                bulletOffset.x = Mathf.Sin(_rotation * Mathf.Deg2Rad) * laserOffset;
-                bulletOffset.y = Mathf.Cos(_rotation * Mathf.Deg2Rad) * laserOffset;
-
-                Vector2 shipNosePosition = (Vector2)transform.position + bulletOffset;
-                
-                _laserLines.SetActive(true);
-                
-                LaserController.Initialize(_rotation, shipNosePosition);
-            }
-            else
-            {
-                // switch off Laser
-                IsLaserActive = false;
-                _laserLines.SetActive(false);
-                LaserController.SwitchOff();
-                if (_laserFill > 0.2f)
-                {
-                    _isLaserDepleted = false;
-                }
-            }
-            
-            float laserFillSpeed = .2f;
-            _laserFill += Time.deltaTime * laserFillSpeed;
-            if (_laserFill > 1f)
-            {
-                _laserFill = 1f;
-            }
-        }
-
-        private void UpdateSpeed()
-        {
-            float accelerationFactor = 200f;
-            if (_inputController.MoveValue.y > 0)
-            {
-                Vector3 forceVector = new Vector3(Mathf.Sin(_rotation * Mathf.Deg2Rad), Mathf.Cos(_rotation * Mathf.Deg2Rad));
-                forceVector *= Time.deltaTime * accelerationFactor;
-                _movementVector += forceVector;
-            }
-        }
-
-        private void UpdateFlame()
-        {
-            bool isFlameActive = _inputController.MoveValue.y > 0;
-            _flameObject.SetActive(isFlameActive);
-        }
-        
-        private void UpdateRotation()
-        {
-            float rotationFactor = 150f;
-            if (_inputController.MoveValue.x > 0)
-            {
-                _rotation += Time.deltaTime * rotationFactor;
-            }
-            else if (_inputController.MoveValue.x < 0)
-            {
-                _rotation -= Time.deltaTime * rotationFactor;
-            }  
-            
-            _contentTransform.rotation = Quaternion.Euler(0, 180, _rotation);
-        }
-
-        private void MovePlayer()
-        {
-            Vector3 tempVector = transform.position;
-            tempVector.x += _movementVector.x * Time.deltaTime;
-            tempVector.y += _movementVector.y * Time.deltaTime;
-            
-            MoveTo(tempVector);
-        }
-        
+      
         public void IncreaseBullets()
         {
-            _bulletsCount += 3;
+            _bulletsCount = _bulletsCount + 1;
         }
 
         public void GetPlayerData(in PlayerDataSet playerDataSet)
         {
-            playerDataSet.Angle = _rotation % 360f;
+            playerDataSet.Angle = Rotation % 360f;
             playerDataSet.Coordinates.x = transform.position.x;
             playerDataSet.Coordinates.y = transform.position.y;
-            playerDataSet.Speed = _movementVector.magnitude;
-            playerDataSet.BulletsCount = _bulletsCount;
+            playerDataSet.Speed = _playerLogic.MovementVector.magnitude;
+            playerDataSet.BulletsCount = BulletsCount;
             playerDataSet.LaserFill = _laserFill;
             playerDataSet.Score = EnemiesKilled;
         }
@@ -208,6 +108,15 @@ namespace AsteroidsSurvival.Gameplay.Player
                 throw new NotImplementedException("OnPlayerKilled event is missing");
             }
             OnPlayerKilled.Invoke();
+        }
+
+        public void MakeShot(float rotation, Vector3 shipNosePosition)
+        {
+            if (OnMakeShot == null)
+            {
+                throw new NotImplementedException("OnMakeShot event is missing");
+            }
+            OnMakeShot(rotation, shipNosePosition);
         }
         
         #endregion

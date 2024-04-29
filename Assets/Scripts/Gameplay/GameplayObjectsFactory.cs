@@ -42,8 +42,7 @@ namespace AsteroidsSurvival.Gameplay
             PlayerController player = newObject.GetComponent<PlayerController>();
             player.Initialize();
             
-            InputControllerService inputControllerService = MyServiceLocator.Get<InputControllerService>();
-            player.InputController = inputControllerService;
+            
             
             return player;
         }

@@ -1,17 +1,13 @@
 using System;
+using System.Collections.Generic;
+using AsteroidsSurvival.Interfaces;
 using AsteroidsSurvival.Services;
 using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay
 {
-    public class MainGameplayController : MonoBehaviour
+    public class MainGameplayController : MonoBehaviour, IObservable
     {
-        #region Events
-        public event Action OnGameExit;
-        #endregion
-        
-        
-        
         #region Fields
         [SerializeField] private GameplayInterfaceController _interfaceController;
         [SerializeField] private FightField _fightField;
@@ -19,6 +15,7 @@ namespace AsteroidsSurvival.Gameplay
         [SerializeField] private GameOverUI _gameOverController;
         
         private PrefabsData _prefabsData;
+        private List<IObserver> _observers = new();
         #endregion
         
         
@@ -60,11 +57,7 @@ namespace AsteroidsSurvival.Gameplay
             _gameOverController.gameObject.SetActive(true);
             _gameOverController.SetScoreText(_fightField.PlayerController.EnemiesKilled);
 
-            if (OnGameExit == null)
-            {
-                throw new NotImplementedException("OnGameExit event is missing");
-            }
-            OnGameExit.Invoke();
+            NotifyObservers();
         }
 
         public void UpdateGame()
@@ -73,7 +66,35 @@ namespace AsteroidsSurvival.Gameplay
         }
         
         #endregion
-        
+
+
+
+        #region IObservable implementation
+        public void AddObserver(IObserver observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public void RemoveObserver(IObserver observer)
+        {
+            if (_observers.Contains(observer))
+            {
+                _observers.Remove(observer);
+            }
+            else
+            {
+                throw new NotImplementedException("_observers doesnt contain observer!");
+            }
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (IObserver observer in _observers)
+            {
+                observer.GetNotification();
+            }
+        }
+        #endregion
     }
 
     public class PlayerDataSet

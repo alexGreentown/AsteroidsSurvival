@@ -13,7 +13,7 @@ namespace AsteroidsSurvival.Managers.ScenesManager
     /// Gameplay State for ScenesManagerFSM
     /// </summary>
     [Serializable]
-    public class ScenesManagerStateGameplay : IFSMState, ILogic
+    public class ScenesManagerStateGameplay : IFSMState, ILogic, IObserver
     {
         #region Fields
         private MainGameplayController _gameplayControllerInstance;
@@ -42,24 +42,22 @@ namespace AsteroidsSurvival.Managers.ScenesManager
             GameObject gameplayPrefab = _prefabsData.GameplayUIController;
             GameObject newObject = UnityEngine.Object.Instantiate(gameplayPrefab);
             _gameplayControllerInstance = newObject.GetComponent<MainGameplayController>();
+            _gameplayControllerInstance.AddObserver(this);
             
             _gameplayControllerInstance.Initialize();
         }
         
         public void StartGameplay()
         {
-            _gameplayControllerInstance.OnGameExit += EndGameplay;
             _gameplayControllerInstance.StartGameplay();
         }
 
         private void EndGameplay()
         {
-            _gameplayControllerInstance.OnGameExit -= EndGameplay;
-
             _gameOver = true;
             InitializeInputService();
             
-            string debugString = "EndGameplay()";
+            string debugString = "ScenesManagerStateGameplay::EndGameplay()";
             debugString.Log();
         }
         #endregion
@@ -99,12 +97,24 @@ namespace AsteroidsSurvival.Managers.ScenesManager
 
         public void ExitState()
         {
-            string debugString = "ExitState() ScenesManagerStateGameplay";
+            string debugString = "ScenesManagerStateGameplay::ExitState()";
             debugString.Log();
             
-            GameObject.Destroy(_gameplayControllerInstance.gameObject);
+            UnityEngine.Object.Destroy(_gameplayControllerInstance.gameObject);
         }
 
+        #endregion
+
+
+
+        #region IObserver implementation
+        /// <summary>
+        /// Wait for GameOver notification
+        /// </summary>
+        public void GetNotification()
+        {
+            EndGameplay();
+        }
         #endregion
     }
 }

@@ -113,7 +113,7 @@ namespace AsteroidsSurvival.Managers.ScenesManager
         {
             _cancelTokenSource.Cancel();
 
-            GameObject.Destroy(_mainMenuInstance.gameObject);
+            UnityEngine.Object.Destroy(_mainMenuInstance.gameObject);
             
             string debugString = "ExitState() ScenesManagerStateMainMenu";
             debugString.Log();

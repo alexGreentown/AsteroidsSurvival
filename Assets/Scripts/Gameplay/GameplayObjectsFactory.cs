@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AsteroidsSurvival.Gameplay.Enemy;
 using AsteroidsSurvival.Gameplay.Player;
 using AsteroidsSurvival.Gameplay.Shot;
@@ -8,6 +6,7 @@ using AsteroidsSurvival.ServiceLocator;
 using AsteroidsSurvival.Services;
 using AsteroidsSurvival.View.Gameplay.Asteroid;
 using UnityEngine;
+using AsteroidsSurvival.Utils;
 
 namespace AsteroidsSurvival.Gameplay
 {
@@ -20,7 +19,8 @@ namespace AsteroidsSurvival.Gameplay
         // Container where fight objects, ships, asteroids are instantiated into
         private Transform _fightContainer;
 
-        private List<BulletController> _bulletsPool = new();
+        private GenericPool<BulletController> _bulletsPool = new();
+        private GenericPool<AsteroidController> _asteroidsPool = new();
         #endregion
         
         
@@ -49,11 +49,9 @@ namespace AsteroidsSurvival.Gameplay
 
         public BulletController CreateBullet()
         {
-            int lastBullet = _bulletsPool.Count - 1;
-            if (_bulletsPool.Count > 0 && _bulletsPool[lastBullet].IsDestroyed)
+            BulletController bulletFromPool = _bulletsPool.Get();
+            if(bulletFromPool != null)
             {
-                BulletController bulletFromPool = _bulletsPool[lastBullet];
-                _bulletsPool.RemoveAt(lastBullet);
                 bulletFromPool.gameObject.SetActive(true);
                 return bulletFromPool;
             }
@@ -67,11 +65,23 @@ namespace AsteroidsSurvival.Gameplay
 
         public AsteroidController CreateAsteroid()
         {
+            AsteroidController asteroidFromPool = _asteroidsPool.Get();
+            if(asteroidFromPool != null)
+            {
+                asteroidFromPool.gameObject.SetActive(true);
+                return asteroidFromPool;
+            }
+            
             GameObject asteroidPrefab = _prefabsData.AsteroidController;
             GameObject newObject = GameObject.Instantiate(asteroidPrefab, _fightContainer);
             AsteroidController asteroid = newObject.GetComponent<AsteroidController>();
             asteroid.Initialize();
             return asteroid;
+        }
+
+        public void AddToAsteroidsPool(AsteroidController asteroid)
+        { 
+            _asteroidsPool.Add(asteroid);
         }
 
         public GameObject CreateExplosion()
@@ -101,7 +111,7 @@ namespace AsteroidsSurvival.Gameplay
             return asteroidsDelayValue;
         }
 
-        public void AddBulletToBulletsPool(BulletController targetBullet)
+        public void AddToBulletsPool(BulletController targetBullet)
         {
             _bulletsPool.Add(targetBullet);
         }
@@ -122,6 +132,5 @@ namespace AsteroidsSurvival.Gameplay
         }
         
         #endregion
-
     }
 }

@@ -16,8 +16,6 @@ namespace AsteroidsSurvival.View.Gameplay.Asteroid
         private float _speedFactor = 50f;
 
         private Vector3 _rotationVector;
-
-        public bool IsDestroyed { get; set; }
         
         public float Radius => _radius;
         

@@ -115,7 +115,7 @@ namespace AsteroidsSurvival.Managers.ScenesManager
 
             UnityEngine.Object.Destroy(_mainMenuInstance.gameObject);
             
-            string debugString = "ExitState() ScenesManagerStateMainMenu";
+            string debugString = "ScenesManagerStateMainMenu::ExitState()";
             debugString.Log();
         }
         

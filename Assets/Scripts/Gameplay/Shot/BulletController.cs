@@ -29,9 +29,6 @@ namespace AsteroidsSurvival.Gameplay.Shot
         
 
         public BulletType BulletType{ get; set; }
-
-        // We use IsDestroyed to move destroyed bullets to pool in next frame after bullet frame logic
-        public bool IsDestroyed { get; set; } = false;
         #endregion
         
         
@@ -39,8 +36,6 @@ namespace AsteroidsSurvival.Gameplay.Shot
         #region Methods
         public void Initialize(float rotation, Vector2 position)
         {
-            IsDestroyed = false;
-            
             _flightDistanceCounter = _flightDistance;
 
             transform.position = position;
@@ -74,7 +69,6 @@ namespace AsteroidsSurvival.Gameplay.Shot
 
         public void DestroyBullet()
         {
-            IsDestroyed = true;
             if (OnBulletDestroy == null)
             {
                 throw new NotImplementedException("OnBulletDestroy event is missing");

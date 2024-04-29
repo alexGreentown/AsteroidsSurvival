@@ -66,32 +66,14 @@ namespace AsteroidsSurvival.Gameplay
             OnPlayerDataUpdate(_playerDataSet);
 
             _gameplayFightLogic.MyUpdate();
-
-            // check for IsDestroyed and remove from bullets list after _gameplayFightLogic.MyUpdate()
-            // because in _gameplayFightLogic.MyUpdate() is used foreach loop
-            for (int i = _bulletsList.Count; i-- > 0;)
-            {
-                if (_bulletsList[i].IsDestroyed)
-                {
-                    _bulletsList.RemoveAt(i);
-                }
-            }
             
             for (int i = _enemiesList.Count; i-- > 0;)
             {
-                if (_enemiesList[i].IsDestroyed)
+                if (_enemiesList[i] is AsteroidController asteroid)
                 {
-                    _enemiesList.RemoveAt(i);
-                }
-            }
-
-            for (int i = _enemiesList.Count; i-- > 0;)
-            {
-                if (_enemiesList[i].IsDivided)
-                {
-                    if (_enemiesList[i] is AsteroidController asteroid)
+                    if (asteroid.IsDivided)
                     {
-                        _enemiesList[i].IsDivided = false;
+                        asteroid.IsDivided = false;
                         float randomDirection = UnityEngine.Random.Range(0f, 360f);
                         asteroid.AsteroidStrategy = new AsteroidStrategySmall();
                         asteroid.Initialize(randomDirection + 25f);
@@ -272,9 +254,16 @@ namespace AsteroidsSurvival.Gameplay
         private void DestroyBullet(BulletController targetBullet)
         {
             targetBullet.gameObject.SetActive(false);
-            _objectsFactory.AddBulletToBulletsPool(targetBullet);
+            _objectsFactory.AddToBulletsPool(targetBullet);
+            StartCoroutine(RemoveFromBulletsListInNextFrame(targetBullet));
         }
-        
+
+        private IEnumerator RemoveFromBulletsListInNextFrame(BulletController targetBullet)
+        {
+            yield return null;
+            _bulletsList.Remove(targetBullet);
+        }
+
         private void InitializeEnemyBullet(float rotation, Vector2 position)
         {
             BulletController newBullet = _objectsFactory.CreateBullet();
@@ -298,6 +287,10 @@ namespace AsteroidsSurvival.Gameplay
                     asteroid.IsDivided = true;
                     return;
                 }
+                else
+                {
+                    _objectsFactory.AddToAsteroidsPool(asteroid);
+                }
             }
             
             GameObject explosion = _objectsFactory.CreateExplosion();
@@ -305,7 +298,7 @@ namespace AsteroidsSurvival.Gameplay
             explosion.transform.position = enemyTransform.transform.position;
             enemyTransform.gameObject.SetActive(false);
 
-            enemy.IsDestroyed = true;
+            StartCoroutine(RemoveFromEnemyListInNextFrame(enemy));
 
             if (enemy is UFOController ufo)
             {
@@ -314,6 +307,13 @@ namespace AsteroidsSurvival.Gameplay
 
             _playerController.EnemiesKilled++;
         }
+
+        private IEnumerator RemoveFromEnemyListInNextFrame(IEnemy enemy)
+        {
+            yield return null;
+            _enemiesList.Remove(enemy);
+        }
+
         #endregion
         
     }

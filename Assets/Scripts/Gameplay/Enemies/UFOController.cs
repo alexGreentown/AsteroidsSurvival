@@ -26,9 +26,6 @@ namespace AsteroidsSurvival.Gameplay.Enemy
         private float _shootingInterval = 5f;
         private float _shootingTimer;
 
-        public bool IsDestroyed { get; set; }
-        public bool IsDivided { get; set; }
-
         public float Radius => _radius;
         public Transform Transform => transform;
         #endregion
@@ -40,8 +37,6 @@ namespace AsteroidsSurvival.Gameplay.Enemy
         public void Initialize(PlayerController player)
         {
             _playerController = player;
-
-            IsDestroyed = false;
             
             // Start flying in a random direction
             float rotation = Random.Range(0f, 360f);
@@ -101,11 +96,6 @@ namespace AsteroidsSurvival.Gameplay.Enemy
         #region IEnemy implementation
         public void UpdateEnemy()
         {
-            if (IsDestroyed)
-            {
-                return;
-            }
-            
             UpdatePosition();
             
             UpdateAim();

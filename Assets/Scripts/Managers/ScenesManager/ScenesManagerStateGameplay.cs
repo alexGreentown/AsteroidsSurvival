@@ -31,8 +31,7 @@ namespace AsteroidsSurvival.Managers.ScenesManager
         
         private void InitializeInputService()
         {
-            InputControllerService inputService = MyServiceLocator.Get<InputControllerService>();
-            _input = inputService;
+            _input = MyServiceLocator.Get<InputControllerService>();
         }
         
         private void InitializeGameField()
@@ -100,6 +99,7 @@ namespace AsteroidsSurvival.Managers.ScenesManager
             string debugString = "ScenesManagerStateGameplay::ExitState()";
             debugString.Log();
             
+            _gameplayControllerInstance.RemoveObserver(this);
             UnityEngine.Object.Destroy(_gameplayControllerInstance.gameObject);
         }
 

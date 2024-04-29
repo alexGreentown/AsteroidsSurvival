@@ -90,7 +90,7 @@ namespace AsteroidsSurvival.Gameplay.Player
             _bulletsCount = _bulletsCount + 1;
         }
 
-        public void GetPlayerData(in PlayerDataSet playerDataSet)
+        public void GetPlayerData(PlayerDataSet playerDataSet)
         {
             playerDataSet.Angle = Rotation % 360f;
             playerDataSet.Coordinates.x = transform.position.x;

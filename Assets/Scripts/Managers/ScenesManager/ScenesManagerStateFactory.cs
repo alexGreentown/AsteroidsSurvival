@@ -6,7 +6,6 @@ namespace AsteroidsSurvival.Managers.ScenesManager
 {
     class ScenesManagerStateFactory : ILogic
     {
-        
         private Dictionary<ScenesStateType, IFSMState> _myStates = new();
 
         public IFSMState CreateState(ScenesStateType stateType, IFSM myFSM)

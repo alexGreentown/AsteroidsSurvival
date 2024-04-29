@@ -62,7 +62,7 @@ namespace AsteroidsSurvival.Gameplay
 
         public void UpdateFight()
         {
-            _playerController.GetPlayerData(in _playerDataSet);
+            _playerController.GetPlayerData(_playerDataSet);
             OnPlayerDataUpdate(_playerDataSet);
 
             _gameplayFightLogic.MyUpdate();
@@ -77,8 +77,6 @@ namespace AsteroidsSurvival.Gameplay
                 }
             }
             
-            // check for IsDestroyed and remove from enemies list after _gameplayFightLogic.MyUpdate()
-            // because in _gameplayFightLogic.MyUpdate() is used foreach loop
             for (int i = _enemiesList.Count; i-- > 0;)
             {
                 if (_enemiesList[i].IsDestroyed)

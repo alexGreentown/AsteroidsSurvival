@@ -33,13 +33,11 @@ namespace AsteroidsSurvival.Gameplay
             _fightField.OnPlayerDataUpdate -= _interfaceController.UpdatePlayerData;
             _fightField.OnGameOver -= OnGameOver;
         }
-
         #endregion
         
         
         
         #region Methods
-        
         public void Initialize()
         {
             _gameOverController.gameObject.SetActive(false);
@@ -64,7 +62,6 @@ namespace AsteroidsSurvival.Gameplay
         {
             _fightField.UpdateFight();
         }
-        
         #endregion
 
 
@@ -99,7 +96,7 @@ namespace AsteroidsSurvival.Gameplay
 
     public class PlayerDataSet
     {
-        public Vector2 Coordinates = new();
+        public Vector2 Coordinates;
         public float Angle;
         public float Speed;
         public int BulletsCount;

@@ -1,4 +1,3 @@
-using AsteroidsSurvival.View;
 using UnityEngine;
 
 namespace AsteroidsSurvival.Interfaces

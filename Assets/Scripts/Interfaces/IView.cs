@@ -1,5 +1,5 @@
 
-namespace AsteroidsSurvival.View
+namespace AsteroidsSurvival.Interfaces
 {
     public interface IView
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AsteroidsSurvival.View.Gameplay
+namespace AsteroidsSurvival.Interfaces
 {
     public interface IShooting
     {

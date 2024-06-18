@@ -1,25 +1,21 @@
 using AsteroidsSurvival.Gameplay;
-using AsteroidsSurvival.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AsteroidsSurvival.View.Gameplay.Asteroid
 {
-    public class AsteroidController : PortalMovingBase, IEnemy
+    public class AsteroidController : MonoBehaviour, IMoving, IEnemy
     {
         #region Fields and properties
         [SerializeField] private float _radius = 5f;
-        [SerializeField] private Transform _content;
+        [SerializeField] private Transform _contentTransform;
         [SerializeField] private Image _graphics;
-        
-        private Vector3 _movementVector = new();
-        private float _speedFactor = 50f;
-
-        private Vector3 _rotationVector;
         
         public float Radius => _radius;
         
         public Transform Transform => transform;
+        
+        private AsteroidLogic _asteroidLogic = new();
         
         public bool IsDivided { get; set; }
         
@@ -30,53 +26,40 @@ namespace AsteroidsSurvival.View.Gameplay.Asteroid
             set => _asteroidStrategy = value;
         }
 
+        public Transform ContentTransform
+        {
+            get => _contentTransform;
+        }
         #endregion
         
         
         
         #region Methods
-        
         public void Initialize(float? directionAngle = null)
         {
-            _radius = AsteroidStrategy.Radius;
-            _speedFactor = AsteroidStrategy.SpeedFactor;
-            AsteroidStrategy.SetGraphics(_graphics);
-
-            float randomDirection = Random.Range(0f, 360f);
-            float movementAngle = directionAngle ?? randomDirection;
-            _movementVector.x = Mathf.Sin(movementAngle * Mathf.Deg2Rad);
-            _movementVector.y = Mathf.Cos(movementAngle * Mathf.Deg2Rad);
-
-            float rotationSpeed = Random.Range(-50f, 50f);
-            _rotationVector = new Vector3(0f, 0f, rotationSpeed);
+            _asteroidLogic.Initialize(this, directionAngle);
+            _radius = _asteroidStrategy.Radius;
+            
+            _asteroidStrategy.SetGraphics(_graphics);
         }
-
-        private void UpdatePosition()
-        {
-            Vector3 tempVector = transform.position;
-            tempVector.x += _movementVector.x * Time.deltaTime * _speedFactor;
-            tempVector.y += _movementVector.y * Time.deltaTime * _speedFactor;
-
-            MoveTo(tempVector);
-        }
-
-        private void UpdateRotation()
-        {
-            _content.Rotate(_rotationVector * Time.deltaTime);
+        #endregion
+        
+        
+        
+        #region IMoving implementation
+        public void MoveTo(Vector3 targetPosition)
+        {            
+            transform.position = targetPosition;
         }
         #endregion
         
         
         
         #region IEnemy implementation
-        
         public void UpdateEnemy()
         {
-            UpdatePosition();
-
-            UpdateRotation();
+            _asteroidLogic.MyUpdate();
         }
-        
         #endregion
     }
 }

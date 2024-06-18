@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay.Player
 {
-    public class PlayerController : PortalMovingBase, IVisited
+    public class PlayerController : MonoBehaviour, IMoving, IVisited
     {
         #region Events
         public event Action<float, Vector2> OnMakeShot;
@@ -121,7 +121,15 @@ namespace AsteroidsSurvival.Gameplay.Player
         #endregion
 
        
-
+        #region IMoving implementation
+        public void MoveTo(Vector3 targetPosition)
+        {            
+            transform.position = targetPosition;
+        }
+        #endregion
+        
+        
+        
         #region IVisited implementation
         public void AcceptVisit()
         {

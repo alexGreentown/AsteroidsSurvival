@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AsteroidsSurvival.Gameplay.Player
 {
-    public class PlayerLogic : ILogic
+    public class PlayerLogic : PortalMovingLogic
     {
         #region Fields
         private PlayerController _playerController;
@@ -139,6 +139,8 @@ namespace AsteroidsSurvival.Gameplay.Player
             Vector3 tempVector = _playerController.transform.position;
             tempVector.x += _movementVector.x * Time.deltaTime;
             tempVector.y += _movementVector.y * Time.deltaTime;
+
+            CheckPortalMoving(tempVector);
             
             _playerController.MoveTo(tempVector);
         }

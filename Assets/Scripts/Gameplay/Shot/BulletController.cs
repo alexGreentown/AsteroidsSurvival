@@ -10,7 +10,7 @@ namespace AsteroidsSurvival.Gameplay.Shot
         ENEMY
     }
     
-    public class BulletController : PortalMovingBase
+    public class BulletController : MonoBehaviour, IMoving
     {
         #region Events
         public event Action<BulletController> OnBulletDestroy;
@@ -38,7 +38,7 @@ namespace AsteroidsSurvival.Gameplay.Shot
         {
             _flightDistanceCounter = _flightDistance;
 
-            transform.position = position;
+            MoveTo(position);
             
             transform.rotation = Quaternion.Euler(0f, 0f, -rotation);
             
@@ -74,6 +74,15 @@ namespace AsteroidsSurvival.Gameplay.Shot
                 throw new NotImplementedException("OnBulletDestroy event is missing");
             }
             OnBulletDestroy(this);
+        }
+        #endregion
+        
+        
+        
+        #region IMoving implementation
+        public void MoveTo(Vector3 targetPosition)
+        {            
+            transform.position = targetPosition;
         }
         #endregion
     }

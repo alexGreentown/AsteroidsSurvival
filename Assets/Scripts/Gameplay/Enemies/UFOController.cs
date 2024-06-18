@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace AsteroidsSurvival.Gameplay.Enemy
 {
-    public class UFOController : PortalMovingBase, IEnemy
+    public class UFOController : MonoBehaviour, IMoving, IEnemy
     {
         #region Events
         public event Action<float, Vector2> OnMakeShot;
@@ -101,6 +101,15 @@ namespace AsteroidsSurvival.Gameplay.Enemy
             UpdateAim();
 
             UpdateShot();
+        }
+        #endregion
+        
+        
+        
+        #region IMoving implementation
+        public void MoveTo(Vector3 targetPosition)
+        {            
+            transform.position = targetPosition;
         }
         #endregion
 

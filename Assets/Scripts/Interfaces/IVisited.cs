@@ -1,6 +1,7 @@
-using AsteroidsSurvival.Interfaces;
-
-public interface IVisited
+namespace AsteroidsSurvival.Interfaces
 {
-    void AcceptVisit();
+    public interface IVisited
+    {
+        void AcceptVisit();
+    }
 }

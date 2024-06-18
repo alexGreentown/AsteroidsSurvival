@@ -1,7 +1,7 @@
 using AsteroidsSurvival.View;
 using UnityEngine;
 
-namespace AsteroidsSurvival.Gameplay
+namespace AsteroidsSurvival.Interfaces
 {
     public interface IMoving : IView
     {

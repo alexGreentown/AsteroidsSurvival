@@ -10,7 +10,7 @@ namespace AsteroidsSurvival.Gameplay
     /// </summary>
     public class PortalMovingLogic : ILogic
     {
-        public virtual void CheckPortalMoving(Vector3 targetPosition)
+        public void CheckPortalMoving(ref Vector3 targetPosition)
         {
             if (targetPosition.x < 0f)
             {

@@ -1,9 +1,10 @@
+using AsteroidsSurvival.Gameplay;
 using AsteroidsSurvival.Interfaces;
 using UnityEngine;
 
 namespace AsteroidsSurvival.View.Gameplay.Asteroid
 {
-    public class AsteroidLogic : ILogic
+    public class AsteroidLogic : PortalMovingLogic
     {
         #region Fields
         private Vector3 _movementVector = new();
@@ -44,6 +45,8 @@ namespace AsteroidsSurvival.View.Gameplay.Asteroid
             tempVector.x += _movementVector.x * Time.deltaTime * _speedFactor;
             tempVector.y += _movementVector.y * Time.deltaTime * _speedFactor;
 
+            CheckPortalMoving(ref tempVector);
+            
             _asteroidController.MoveTo(tempVector);
         }
 

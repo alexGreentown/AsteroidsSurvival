@@ -1,4 +1,4 @@
-using AsteroidsSurvival.Gameplay;
+using AsteroidsSurvival.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 

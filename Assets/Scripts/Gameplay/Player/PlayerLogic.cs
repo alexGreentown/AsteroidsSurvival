@@ -140,7 +140,7 @@ namespace AsteroidsSurvival.Gameplay.Player
             tempVector.x += _movementVector.x * Time.deltaTime;
             tempVector.y += _movementVector.y * Time.deltaTime;
 
-            CheckPortalMoving(tempVector);
+            CheckPortalMoving(ref tempVector);
             
             _playerController.MoveTo(tempVector);
         }

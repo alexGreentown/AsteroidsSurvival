@@ -1,4 +1,5 @@
 using System;
+using AsteroidsSurvival.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +22,7 @@ namespace AsteroidsSurvival.Gameplay.Shot
         #region Fields and properties
         [SerializeField]private Image _bulletImage;
         
-        private Vector3 _movementVector = new();
-        private float _flightDistanceCounter;
-        
-        private float _speedFactor = 200f;
-        private float _flightDistance = 300f;
-        
+        private BulletLogic _bulletLogic = new();
 
         public BulletType BulletType{ get; set; }
         #endregion
@@ -36,15 +32,11 @@ namespace AsteroidsSurvival.Gameplay.Shot
         #region Methods
         public void Initialize(float rotation, Vector2 position)
         {
-            _flightDistanceCounter = _flightDistance;
+            _bulletLogic.Initialize(this, rotation);
 
             MoveTo(position);
             
             transform.rotation = Quaternion.Euler(0f, 0f, -rotation);
-            
-            _movementVector.x = Mathf.Sin(rotation * Mathf.Deg2Rad);
-            _movementVector.y = Mathf.Cos(rotation * Mathf.Deg2Rad);
-            _movementVector.z = 0;
         }
 
         public void SetSprite(Sprite bulletSprite)
@@ -54,17 +46,7 @@ namespace AsteroidsSurvival.Gameplay.Shot
         
         public void UpdateBullet()
         {
-            Vector3 tempVector = transform.position;
-            tempVector.x += _movementVector.x * Time.deltaTime * _speedFactor;
-            tempVector.y += _movementVector.y * Time.deltaTime * _speedFactor;
-
-            MoveTo(tempVector);
-            
-            _flightDistanceCounter -= _movementVector.magnitude;
-            if (_flightDistanceCounter < 0f)
-            {
-                DestroyBullet();
-            }
+            _bulletLogic.MyUpdate();
         }
 
         public void DestroyBullet()

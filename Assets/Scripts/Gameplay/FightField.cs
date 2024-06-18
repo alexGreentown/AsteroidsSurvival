@@ -6,6 +6,7 @@ using AsteroidsSurvival.View;
 using UnityEngine;
 using AsteroidsSurvival.Gameplay.Player;
 using AsteroidsSurvival.Gameplay.Shot;
+using AsteroidsSurvival.Interfaces;
 using AsteroidsSurvival.View.Gameplay.Asteroid;
 
 namespace AsteroidsSurvival.Gameplay
